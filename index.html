@@ -44,6 +44,13 @@ input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);bo
 .pop{position:fixed;top:calc(env(safe-area-inset-top,0px) + 76px);left:16px;background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:6px;display:none;z-index:8}
 .pop button{display:block;width:100%;background:none;border:0;padding:14px 18px;text-align:left;font-size:18px}
 .bn{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:16px;right:16px;background:var(--ur);color:#fff;padding:12px 16px;border-radius:14px;display:none;z-index:20}
+.cm{display:flex;margin:6px 0}.cm.me{justify-content:flex-end}
+.bub{max-width:84%;background:var(--card);border-radius:18px;padding:10px 14px;overflow-wrap:anywhere}
+.cm.me .bub{background:var(--be);color:var(--bt)}.cm.me .mu{color:#5b4f3e}
+.cbar{position:fixed;left:0;right:0;bottom:0;display:none;gap:10px;align-items:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:#000;z-index:5}
+.cbar input{flex:1;height:50px;border-radius:26px;padding:0 20px;background:var(--card)}
+body.inchat .bar{display:none}body.inchat .cbar{display:flex}
+#chat{padding-bottom:110px}
 #login{max-width:380px;margin:70px auto;padding:0 18px}
 #login form{display:flex;flex-direction:column;gap:12px}
 #app{display:none}
@@ -67,7 +74,8 @@ input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);bo
   <div id="hm">
     <div class="ban"><div><b>Aujourd’hui</b><small id="bs"></small></div><button data-go="tasks">Voir</button></div>
     <nav class="menu">
-      <button data-go="msgs">💬 Messages <em id="c1"></em></button>
+      <button data-go="chat">💬 Chat d’équipe</button>
+      <button data-go="msgs">📌 Messages <em id="c1"></em></button>
       <button data-go="tasks">✅ Tâches <em id="c2"></em></button>
       <button data-go="plan">📅 Mon planning <em id="c3"></em></button>
     </nav>
@@ -75,6 +83,11 @@ input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);bo
     <div id="recent"></div>
   </div>
   <div id="res"></div>
+</section>
+
+<section id="chat" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Chat d’équipe</b><span style="width:48px"></span></div>
+  <div id="cl"></div>
 </section>
 
 <section id="msgs" class="scr">
@@ -99,6 +112,8 @@ input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);bo
   <input id="q" type="search" placeholder="Rechercher">
   <button class="pl" id="plus">✏️</button>
 </div>
+
+<form class="cbar" id="cf"><button type="button" class="rb" id="cmic">🎤</button><input id="ci" placeholder="Écris un message…" autocomplete="off"><button class="pl" style="width:50px;height:50px;font-size:20px">➤</button></form>
 
 <div id="pop" class="pop"><button id="nm">✏️ Changer mon prénom</button><button id="out">↩︎ Se déconnecter</button></div>
 
@@ -137,7 +152,7 @@ const fd=d=>d?new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",da
 const ft=s=>new Date(s).toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
 const bn=t=>{const b=$("#bn");b.textContent=t;b.style.display="block";setTimeout(()=>b.style.display="none",5000)};
 const ok=async p=>{const r=await p;if(r.error)bn("Erreur : "+r.error.message);return r};
-const go=id=>{$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));scrollTo(0,0)};
+const go=id=>{$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));document.body.classList.toggle("inchat",id==="chat");scrollTo(0,id==="chat"?9e5:0)};
 const openSheet=f=>{$("#sheet").className="sheet on "+f;$$(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.f===f))};
 const closeSheet=()=>$("#sheet").classList.remove("on");
 
@@ -150,16 +165,18 @@ $("#who").onclick=$("#gear").onclick=()=>{const p=$("#pop");p.style.display=p.st
 $("#plus").onclick=()=>openSheet("fm");
 $("#rf").onclick=()=>load();
 
+function audioBtn(path){const a=E("audio");a.controls=true;a.style.width="100%";a.preload="none";
+  const bt=E("button","sm","▶️ Écouter le vocal");
+  bt.onclick=async()=>{const r=await sb.storage.from("files").createSignedUrl(path,3600);
+    if(r.error){bn("Erreur : "+r.error.message);return}
+    a.src=r.data.signedUrl;bt.replaceWith(a);a.play().catch(()=>{})};
+  return bt}
+
 function msgCard(m){const c=E("div","card"+(m.urgent?" urg":""));const h=E("div","row");
   h.append(E("b","",(m.urgent?"🚨 ":"")+m.title));
   if(m.author===me){const x=E("button","x","✕");x.onclick=async()=>{if(confirm("Supprimer ce message ?")){await ok(sb.from("messages").delete().eq("id",m.id));load()}};h.append(x)}
   c.append(h);if(m.body)c.append(E("p","",m.body));
-  if(m.audio_path){const a=E("audio");a.controls=true;a.style.width="100%";a.preload="none";
-    const bt=E("button","sm","▶️ Écouter le vocal");
-    bt.onclick=async()=>{const r=await sb.storage.from("files").createSignedUrl(m.audio_path,3600);
-      if(r.error){bn("Erreur : "+r.error.message);return}
-      a.src=r.data.signedUrl;bt.replaceWith(a);a.play().catch(()=>{})};
-    c.append(bt)}
+  if(m.audio_path)c.append(audioBtn(m.audio_path));
   c.append(E("small","mu",nm(m.author)+" · "+ft(m.created_at)));return c}
 
 function taskCard(t,showTo){const c=E("div","card task"+(t.done?" done":""));
@@ -201,6 +218,36 @@ function render(){
     r.append(...ms.map(msgCard),...ts.map(t=>taskCard(t,true)));
     if(!ms.length&&!ts.length)r.append(E("p","mu","Aucun résultat."))}}
 
+let chatMsgs=[];
+function renderChat(){const c=$("#cl");c.replaceChildren();
+  if(!chatMsgs.length)c.append(E("p","mu","Aucun message. Lance la discussion !"));
+  for(const m of chatMsgs){const w=E("div","cm"+(m.author===me?" me":""));const b=E("div","bub");
+    if(m.author!==me)b.append(E("small","mu",nm(m.author)));
+    if(m.body)b.append(E("div","",m.body));
+    if(m.audio_path)b.append(audioBtn(m.audio_path));
+    b.append(E("small","mu",ft(m.created_at)));w.append(b);c.append(w)}
+  if($("#chat").classList.contains("on"))scrollTo(0,9e5)}
+async function loadChat(){
+  const r=await sb.from("chat").select("*").order("created_at",{ascending:false}).limit(100);
+  chatMsgs=(r.data||[]).reverse();renderChat()}
+$("#cf").onsubmit=async e=>{e.preventDefault();const t=$("#ci").value.trim();if(!t)return;
+  $("#ci").value="";await ok(sb.from("chat").insert({body:t}));loadChat()};
+let cmr,cch=[];
+$("#cmic").onclick=async()=>{
+  if(cmr&&cmr.state==="recording"){cmr.stop();return}
+  try{
+    const st=await navigator.mediaDevices.getUserMedia({audio:true});
+    const mt=MediaRecorder.isTypeSupported("audio/mp4")?"audio/mp4":"audio/webm";
+    cmr=new MediaRecorder(st,{mimeType:mt});cch=[];
+    cmr.ondataavailable=e=>{if(e.data.size)cch.push(e.data)};
+    cmr.onstop=async()=>{st.getTracks().forEach(t=>t.stop());$("#cmic").textContent="🎤";
+      const b=new Blob(cch,{type:mt}),ap="audio/"+me+"/"+Date.now()+"."+(mt.includes("mp4")?"m4a":"webm");
+      const u=await sb.storage.from("files").upload(ap,b,{contentType:mt});
+      if(u.error){bn("Erreur d’envoi du vocal : "+u.error.message);return}
+      await ok(sb.from("chat").insert({audio_path:ap}));loadChat()};
+    cmr.start();$("#cmic").textContent="⏹️";
+  }catch(e){bn("Micro refusé : autorise le micro pour ce site dans les réglages.")}};
+
 async function load(){
   const [p,m,t,pl]=await Promise.all([
     sb.from("profiles").select("id,name"),
@@ -208,7 +255,7 @@ async function load(){
     sb.from("tasks").select("*").order("created_at",{ascending:false}),
     sb.from("plan").select("*")]);
   ids=(p.data||[]).map(x=>x.id);names={};(p.data||[]).forEach(x=>names[x.id]=x.name);
-  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];render()}
+  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];render();renderChat()}
 
 $("#tf").onchange=render;
 $("#q").oninput=e=>{q=e.target.value;if(q.trim())go("home");render()};
@@ -255,9 +302,10 @@ async function start(){
   const {data:{session}}=await sb.auth.getSession();
   if(!session)return;
   me=session.user.id;$("#login").style.display="none";$("#app").style.display="block";
-  await load();
+  await load();await loadChat();
   sb.channel("kut").on("postgres_changes",{event:"*",schema:"public",table:"messages"},load)
-    .on("postgres_changes",{event:"*",schema:"public",table:"tasks"},load).subscribe()}
+    .on("postgres_changes",{event:"*",schema:"public",table:"tasks"},load)
+    .on("postgres_changes",{event:"*",schema:"public",table:"chat"},loadChat).subscribe()}
 start();
 </script>
 </body></html>
