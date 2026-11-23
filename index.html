@@ -2,35 +2,50 @@
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
 <title>Kut · Équipe</title>
 <style>
-:root{--bg:#f6f2ea;--card:#fff;--tx:#1d1b18;--mu:#7a746b;--ac:#8a7766;--ln:#e4ddd0;--ur:#c0392b;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171513;--card:#242120;--tx:#f1ece4;--mu:#a39b90;--ac:#b49d88;--ln:#38332f;--ur:#ff6b5b;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#171513;--card:#242120;--tx:#f1ece4;--mu:#a39b90;--ac:#b49d88;--ln:#38332f;--ur:#ff6b5b;color-scheme:dark}
-*{box-sizing:border-box}html,body{margin:0}
-body{background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,system-ui,"Segoe UI",sans-serif}
-header{padding:14px 16px 6px;font-weight:700;font-size:20px;display:flex;justify-content:space-between;align-items:center}
-header span button{margin-left:6px}
-nav{display:flex;gap:6px;padding:6px 12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:2}
-nav button{flex:1;padding:10px 4px;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:10px;font:inherit;font-size:14px}
-nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
-main{padding:8px 12px 40px;max-width:640px;margin:0 auto}
-.pane{display:none}.pane.on{display:block}
-form,.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px;margin:8px 0}
-form{display:flex;flex-direction:column;gap:8px}
-input,textarea,select{width:100%;padding:10px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
-input[type=checkbox]{width:22px;height:22px;flex:none}
-.btn{padding:11px;border:0;border-radius:10px;background:var(--ac);color:#fff;font:inherit;font-weight:600}
-.sm{padding:6px 10px;border:1px solid var(--ln);border-radius:8px;background:var(--card);color:var(--tx);font-size:14px}
+:root{--bg:#000;--card:#1a1a1a;--tx:#f5f1ea;--mu:#a8a196;--be:#d8c4a6;--bt:#1a1510;--ln:#2c2a27;--ur:#ff6b5b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg)}
+body{color:var(--tx);font:17px/1.4 -apple-system,system-ui,"Segoe UI",sans-serif}
+button{font:inherit;color:var(--tx);cursor:pointer}
+.scr{display:none;padding:12px 16px 130px;max-width:640px;margin:0 auto}.scr.on{display:block}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
+.top b{font-size:22px}
+.av{display:flex;align-items:center;gap:10px;background:none;border:0;font-size:24px;font-weight:600;padding:0}
+.av i{width:52px;height:52px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-style:normal;font-size:22px}
+.rb{width:48px;height:48px;border-radius:50%;border:1px solid var(--ln);background:var(--card);font-size:20px;flex:none}
+.ban{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--be);color:var(--bt);border-radius:40px;padding:16px 16px 16px 24px;margin:8px 0 18px}
+.ban b{font-size:21px}.ban small{display:block;opacity:.8;font-size:15px}
+.ban button{background:var(--bt);color:var(--be);border:0;border-radius:30px;padding:12px 20px;font-weight:600}
+.menu button{display:flex;gap:16px;align-items:center;width:100%;padding:15px 4px;background:none;border:0;font-size:23px;text-align:left}
+.menu em{margin-left:auto;font-style:normal;color:var(--mu);font-size:16px}
+h4{color:var(--mu);font-weight:500;font-size:20px;margin:24px 4px 8px;text-transform:capitalize}
+.card{background:var(--card);border-radius:20px;padding:16px;margin:10px 0}
+.card p{margin:6px 0}.urg{border:1px solid var(--ur)}
 .row{display:flex;gap:8px;align-items:center;justify-content:space-between}.grow{flex:1}
-.mu{color:var(--mu)}small.mu{display:block;margin-top:4px}
-.urg{border-color:var(--ur)}
-.task{display:flex;gap:10px;align-items:flex-start}.done .grow{text-decoration:line-through;opacity:.55}
-.x{background:none;border:0;color:var(--mu);font-size:16px;padding:4px 8px}
-h3{margin:16px 4px 4px;font-size:14px;text-transform:capitalize;color:var(--mu)}
-.bn{background:var(--ur);color:#fff;padding:8px 12px;border-radius:8px;margin:8px 0;display:none}
-label.ck{display:flex;gap:8px;align-items:center}
-#login{max-width:380px;margin:60px auto;padding:0 16px}
+.mu{color:var(--mu)}small.mu{display:block;margin-top:4px;font-size:14px}
+.task{display:flex;gap:12px;align-items:flex-start}.done .grow{text-decoration:line-through;opacity:.5}
+input[type=checkbox]{width:24px;height:24px;flex:none;accent-color:var(--be)}
+.x{background:none;border:0;color:var(--mu);font-size:18px;padding:4px 8px}
+.sm{padding:9px 14px;border:1px solid var(--ln);border-radius:14px;background:var(--card);font-size:15px}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);border-radius:14px;background:#0d0d0d;color:var(--tx);font:inherit}
+.btn{padding:14px;border:0;border-radius:16px;background:var(--be);color:var(--bt);font-weight:700;font-size:17px}
+.bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;align-items:center;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,#000 40%);z-index:5}
+.bar input{flex:1;height:54px;border-radius:30px;padding:0 22px;background:var(--card)}
+.pl{width:58px;height:58px;border-radius:50%;border:0;background:var(--be);color:var(--bt);font-size:24px;flex:none}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;z-index:9}.sheet.on{display:flex}
+.sh{background:#121110;border-radius:26px 26px 0 0;width:100%;max-width:640px;margin:0 auto;padding:16px 16px calc(22px + env(safe-area-inset-bottom,0px));max-height:92vh;overflow:auto}
+.tabs{display:flex;gap:6px;margin-bottom:14px}.tabs button{flex:1;padding:11px 4px;border:1px solid var(--ln);border-radius:14px;background:var(--card);font-size:15px}
+.tabs button.on{background:var(--be);color:var(--bt);border-color:var(--be)}
+.sh form{display:none;flex-direction:column;gap:10px}
+.sheet.fm #fm,.sheet.ft #ft,.sheet.fp #fp{display:flex}
+.ck{display:flex;gap:10px;align-items:center}
+.pop{position:fixed;top:calc(env(safe-area-inset-top,0px) + 76px);left:16px;background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:6px;display:none;z-index:8}
+.pop button{display:block;width:100%;background:none;border:0;padding:14px 18px;text-align:left;font-size:18px}
+.bn{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:16px;right:16px;background:var(--ur);color:#fff;padding:12px 16px;border-radius:14px;display:none;z-index:20}
+#login{max-width:380px;margin:70px auto;padding:0 18px}
+#login form{display:flex;flex-direction:column;gap:12px}
 #app{display:none}
 </style></head>
 <body>
@@ -45,69 +60,107 @@ label.ck{display:flex;gap:8px;align-items:center}
 </div>
 
 <div id="app">
-<header><span>✂️ Kut · Équipe</span><span><button class="sm" id="nm">✏️ Prénom</button><button class="sm" id="out">Quitter</button></span></header>
-<nav><button data-t="m" class="on">💬 Messages</button><button data-t="t">✅ Tâches</button><button data-t="p">📅 Mon planning</button></nav>
-<main>
 <div id="bn" class="bn"></div>
 
-<section id="m" class="pane on">
-<form id="fm">
-<input id="mt" placeholder="Titre (ex : Devis à envoyer)" required>
-<textarea id="mx" rows="3" placeholder="Ton message… (astuce iPhone : micro 🎤 du clavier pour dicter)"></textarea>
-<label class="ck"><input type="checkbox" id="mu"> 🚨 Urgent</label>
-<button class="btn">Envoyer</button>
-</form>
-<div id="msgs"></div>
+<section id="home" class="scr on">
+  <div class="top"><button class="av" id="who"><i id="ini">F</i><span id="wn"></span> ▾</button><button class="rb" id="rf">↻</button></div>
+  <div id="hm">
+    <div class="ban"><div><b>Aujourd’hui</b><small id="bs"></small></div><button data-go="tasks">Voir</button></div>
+    <nav class="menu">
+      <button data-go="msgs">💬 Messages <em id="c1"></em></button>
+      <button data-go="tasks">✅ Tâches <em id="c2"></em></button>
+      <button data-go="plan">📅 Mon planning <em id="c3"></em></button>
+    </nav>
+    <h4>Derniers messages</h4>
+    <div id="recent"></div>
+  </div>
+  <div id="res"></div>
 </section>
 
-<section id="t" class="pane">
-<form id="ft">
-<input id="tt" placeholder="Tâche à faire" required>
-<select id="tto"></select>
-<input id="td" type="date">
-<button class="btn">Ajouter la tâche</button>
-</form>
-<select id="tf"><option value="all">Toutes les tâches</option><option value="me">Seulement les miennes</option></select>
-<div id="tl"></div>
+<section id="msgs" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Messages</b><span style="width:48px"></span></div>
+  <div id="ml"></div>
 </section>
 
-<section id="p" class="pane">
-<p class="mu">Ici : tes tâches + tes notes perso. 🔒 Tes notes perso sont privées, personne d’autre ne les voit.</p>
-<form id="fp">
-<input id="pt" placeholder="Note perso (ex : Dentiste)" required>
-<div class="row"><input id="pd" type="date"><input id="ph" type="time"></div>
-<button class="btn">Ajouter à mon planning</button>
-</form>
-<div id="plan"></div>
+<section id="tasks" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Tâches</b><span style="width:48px"></span></div>
+  <select id="tf"><option value="me">Mes tâches</option><option value="all">Toutes les tâches</option></select>
+  <div id="tl"></div>
 </section>
-</main>
+
+<section id="plan" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Mon planning</b><span style="width:48px"></span></div>
+  <p class="mu">🔒 Tes notes perso sont privées : personne d’autre ne les voit.</p>
+  <div id="pl"></div>
+</section>
+
+<div class="bar">
+  <button class="rb" id="gear">⚙️</button>
+  <input id="q" type="search" placeholder="Rechercher">
+  <button class="pl" id="plus">✏️</button>
+</div>
+
+<div id="pop" class="pop"><button id="nm">✏️ Changer mon prénom</button><button id="out">↩︎ Se déconnecter</button></div>
+
+<div id="sheet" class="sheet"><div class="sh">
+  <div class="tabs"><button data-f="fm">💬 Message</button><button data-f="ft">✅ Tâche</button><button data-f="fp">📅 Note perso</button></div>
+  <form id="fm">
+    <input id="mt" placeholder="Titre (ex : Devis à envoyer)" required>
+    <textarea id="mx" rows="3" placeholder="Ton message… (iPhone : micro 🎤 du clavier pour dicter)"></textarea>
+    <div class="row"><button type="button" class="sm grow" id="rec">🎤 Enregistrer un vocal</button><span id="rt" class="mu"></span></div>
+    <audio id="rp" controls style="display:none;width:100%"></audio>
+    <label class="ck"><input type="checkbox" id="mu"> 🚨 Urgent</label>
+    <button class="btn">Envoyer</button>
+  </form>
+  <form id="ft">
+    <input id="tt" placeholder="Tâche à faire" required>
+    <select id="tto"></select>
+    <input id="td" type="date">
+    <button class="btn">Ajouter la tâche</button>
+  </form>
+  <form id="fp">
+    <input id="pt" placeholder="Note perso (ex : Dentiste)" required>
+    <div class="row"><input id="pd" type="date"><input id="ph" type="time"></div>
+    <button class="btn">Ajouter à mon planning</button>
+  </form>
+</div></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
-const SB_URL="https://zbicdedhtfgiixvkdyem.supabase.co";
-const SB_KEY="sb_publishable_jQCMg-MK1fNZTYuieZzK8g_1-HBMAAk";
-const sb=supabase.createClient(SB_URL,SB_KEY);
-const $=s=>document.querySelector(s);
+const sb=supabase.createClient("https://zbicdedhtfgiixvkdyem.supabase.co","sb_publishable_jQCMg-MK1fNZTYuieZzK8g_1-HBMAAk");
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-let me,names={},ids=[],msgs=[],tasks=[],mine=[];
+let me,names={},ids=[],msgs=[],tasks=[],mine=[],q="";
 const nm=id=>names[id]||"Quelqu’un";
 const fd=d=>d?new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}):"Sans date";
 const ft=s=>new Date(s).toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
 const bn=t=>{const b=$("#bn");b.textContent=t;b.style.display="block";setTimeout(()=>b.style.display="none",5000)};
 const ok=async p=>{const r=await p;if(r.error)bn("Erreur : "+r.error.message);return r};
+const go=id=>{$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));scrollTo(0,0)};
+const openSheet=f=>{$("#sheet").className="sheet on "+f;$$(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.f===f))};
+const closeSheet=()=>$("#sheet").classList.remove("on");
 
-document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll("nav button,.pane").forEach(x=>x.classList.remove("on"));
-  b.classList.add("on");$("#"+b.dataset.t).classList.add("on")});
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-go]");if(g)go(g.dataset.go);
+  const t=e.target.closest(".tabs button");if(t)openSheet(t.dataset.f);
+  if(e.target.id==="sheet")closeSheet();
+  if(!e.target.closest("#pop,#who,#gear"))$("#pop").style.display="none"});
+$("#who").onclick=$("#gear").onclick=()=>{const p=$("#pop");p.style.display=p.style.display==="block"?"none":"block"};
+$("#plus").onclick=()=>openSheet("fm");
+$("#rf").onclick=()=>load();
 
-function renderMsgs(){const b=$("#msgs");b.replaceChildren();
-  if(!msgs.length){b.append(E("p","mu","Aucun message pour l’instant."));return}
-  for(const m of msgs){const c=E("div","card"+(m.urgent?" urg":""));const h=E("div","row");
-    h.append(E("b","",(m.urgent?"🚨 ":"")+m.title));
-    if(m.author===me){const x=E("button","x","✕");x.onclick=async()=>{await ok(sb.from("messages").delete().eq("id",m.id));load()};h.append(x)}
-    c.append(h);if(m.body)c.append(E("p","",m.body));
-    c.append(E("small","mu",nm(m.author)+" · "+ft(m.created_at)));b.append(c)}}
+function msgCard(m){const c=E("div","card"+(m.urgent?" urg":""));const h=E("div","row");
+  h.append(E("b","",(m.urgent?"🚨 ":"")+m.title));
+  if(m.author===me){const x=E("button","x","✕");x.onclick=async()=>{if(confirm("Supprimer ce message ?")){await ok(sb.from("messages").delete().eq("id",m.id));load()}};h.append(x)}
+  c.append(h);if(m.body)c.append(E("p","",m.body));
+  if(m.audio_path){const a=E("audio");a.controls=true;a.style.width="100%";a.preload="none";
+    const bt=E("button","sm","▶️ Écouter le vocal");
+    bt.onclick=async()=>{const r=await sb.storage.from("files").createSignedUrl(m.audio_path,3600);
+      if(r.error){bn("Erreur : "+r.error.message);return}
+      a.src=r.data.signedUrl;bt.replaceWith(a);a.play().catch(()=>{})};
+    c.append(bt)}
+  c.append(E("small","mu",nm(m.author)+" · "+ft(m.created_at)));return c}
 
 function taskCard(t,showTo){const c=E("div","card task"+(t.done?" done":""));
   const cb=E("input");cb.type="checkbox";cb.checked=t.done;
@@ -116,28 +169,37 @@ function taskCard(t,showTo){const c=E("div","card task"+(t.done?" done":""));
   g.append(E("small","mu",(showTo?"Pour "+nm(t.assignee)+" · ":"")+"de "+nm(t.created_by)+(t.due?" · "+fd(t.due):"")));
   c.append(cb,g);return c}
 
-function renderTasks(){const b=$("#tl");b.replaceChildren();
+function render(){
+  $("#wn").textContent=names[me]||"Moi";$("#ini").textContent=(names[me]||"M")[0].toUpperCase();
+  const mo=tasks.filter(t=>t.assignee===me&&!t.done).length;
+  const ug=msgs.filter(m=>m.urgent&&Date.now()-new Date(m.created_at)<2592e5).length;
+  $("#bs").textContent=mo+" tâche"+(mo>1?"s":"")+" à faire · "+ug+" urgent"+(ug>1?"s":"");
+  $("#c1").textContent=msgs.length;$("#c2").textContent=tasks.filter(t=>!t.done).length;
+  $("#recent").replaceChildren(...msgs.slice(0,4).map(msgCard));
+  const ml=$("#ml");ml.replaceChildren(...msgs.map(msgCard));if(!msgs.length)ml.append(E("p","mu","Aucun message."));
   const sel=$("#tto"),keep=sel.value;sel.replaceChildren();
   for(const id of ids){const o=E("option","",id===me?"Pour moi":"Pour "+nm(id));o.value=id;sel.append(o)}
   sel.value=keep||me;
   const l=tasks.filter(t=>$("#tf").value==="all"||t.assignee===me);
   l.sort((a,b)=>(a.done?1:0)-(b.done?1:0)||(a.due||"9").localeCompare(b.due||"9"));
-  if(!l.length){b.append(E("p","mu","Aucune tâche."));return}
-  l.forEach(t=>b.append(taskCard(t,true)))}
-
-function renderPlan(){const b=$("#plan");b.replaceChildren();
-  const it=[...tasks.filter(t=>t.assignee===me).map(o=>({k:"t",day:o.due||"",o})),
-            ...mine.map(o=>({k:"p",day:o.day||"",o}))];
-  if(!it.length){b.append(E("p","mu","Rien de prévu."));return}
+  const tl=$("#tl");tl.replaceChildren(...l.map(t=>taskCard(t,true)));if(!l.length)tl.append(E("p","mu","Aucune tâche."));
+  const it=[...tasks.filter(t=>t.assignee===me).map(o=>({k:"t",day:o.due||"",o})),...mine.map(o=>({k:"p",day:o.day||"",o}))];
+  $("#c3").textContent=it.length;
   it.sort((a,b)=>(a.day||"9").localeCompare(b.day||"9")||(a.o.at_time||"").localeCompare(b.o.at_time||""));
-  let last=null;
+  const pl=$("#pl");pl.replaceChildren();let last=null;
   for(const i of it){
-    if(i.day!==last){b.append(E("h3","",fd(i.day)));last=i.day}
-    if(i.k==="t"){b.append(taskCard(i.o,false));continue}
+    if(i.day!==last){pl.append(E("h4","",fd(i.day)));last=i.day}
+    if(i.k==="t"){pl.append(taskCard(i.o,false));continue}
     const c=E("div","card row");
     c.append(E("div","grow","🔒 "+(i.o.at_time?i.o.at_time.slice(0,5)+" · ":"")+i.o.title));
     const x=E("button","x","✕");x.onclick=async()=>{await ok(sb.from("plan").delete().eq("id",i.o.id));load()};
-    c.append(x);b.append(c)}}
+    c.append(x);pl.append(c)}
+  if(!it.length)pl.append(E("p","mu","Rien de prévu."));
+  const k=q.trim().toLowerCase(),r=$("#res");r.replaceChildren();$("#hm").style.display=k?"none":"block";
+  if(k){const ms=msgs.filter(m=>(m.title+" "+(m.body||"")).toLowerCase().includes(k));
+    const ts=tasks.filter(t=>t.title.toLowerCase().includes(k));
+    r.append(...ms.map(msgCard),...ts.map(t=>taskCard(t,true)));
+    if(!ms.length&&!ts.length)r.append(E("p","mu","Aucun résultat."))}}
 
 async function load(){
   const [p,m,t,pl]=await Promise.all([
@@ -146,19 +208,41 @@ async function load(){
     sb.from("tasks").select("*").order("created_at",{ascending:false}),
     sb.from("plan").select("*")]);
   ids=(p.data||[]).map(x=>x.id);names={};(p.data||[]).forEach(x=>names[x.id]=x.name);
-  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];
-  renderMsgs();renderTasks();renderPlan()}
+  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];render()}
 
-$("#tf").onchange=renderTasks;
+$("#tf").onchange=render;
+$("#q").oninput=e=>{q=e.target.value;if(q.trim())go("home");render()};
+
+let mr,chunks=[],blob=null,tick,t0;
+$("#rec").onclick=async()=>{
+  if(mr&&mr.state==="recording"){mr.stop();return}
+  try{
+    const st=await navigator.mediaDevices.getUserMedia({audio:true});
+    const mt=MediaRecorder.isTypeSupported("audio/mp4")?"audio/mp4":"audio/webm";
+    mr=new MediaRecorder(st,{mimeType:mt});chunks=[];blob=null;
+    mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+    mr.onstop=()=>{st.getTracks().forEach(t=>t.stop());clearInterval(tick);
+      blob=new Blob(chunks,{type:mt});const p=$("#rp");p.src=URL.createObjectURL(blob);p.style.display="block";
+      $("#rec").textContent="🎤 Refaire le vocal";$("#rt").textContent=""};
+    mr.start();t0=Date.now();$("#rec").textContent="⏹️ Arrêter";
+    tick=setInterval(()=>$("#rt").textContent=Math.floor((Date.now()-t0)/1000)+" s",500);
+  }catch(e){bn("Micro refusé : autorise le micro pour ce site dans les réglages.")}};
+
 $("#fm").onsubmit=async e=>{e.preventDefault();
-  await ok(sb.from("messages").insert({title:$("#mt").value.trim(),body:$("#mx").value.trim(),urgent:$("#mu").checked}));
-  e.target.reset();load()};
+  if(mr&&mr.state==="recording"){bn("Appuie d’abord sur « Arrêter ».");return}
+  let ap=null;
+  if(blob){const ext=blob.type.includes("mp4")?"m4a":"webm";ap="audio/"+me+"/"+Date.now()+"."+ext;
+    const u=await sb.storage.from("files").upload(ap,blob,{contentType:blob.type});
+    if(u.error){bn("Erreur d’envoi du vocal : "+u.error.message);return}}
+  const r=await ok(sb.from("messages").insert({title:$("#mt").value.trim(),body:$("#mx").value.trim(),urgent:$("#mu").checked,audio_path:ap}));
+  if(r.error)return;
+  e.target.reset();blob=null;$("#rp").style.display="none";$("#rec").textContent="🎤 Enregistrer un vocal";closeSheet();go("msgs");load()};
 $("#ft").onsubmit=async e=>{e.preventDefault();
   await ok(sb.from("tasks").insert({title:$("#tt").value.trim(),assignee:$("#tto").value,due:$("#td").value||null}));
-  $("#tt").value="";$("#td").value="";load()};
+  $("#tt").value="";$("#td").value="";closeSheet();go("tasks");load()};
 $("#fp").onsubmit=async e=>{e.preventDefault();
   await ok(sb.from("plan").insert({title:$("#pt").value.trim(),day:$("#pd").value||null,at_time:$("#ph").value||null}));
-  e.target.reset();load()};
+  e.target.reset();closeSheet();go("plan");load()};
 $("#nm").onclick=async()=>{const n=prompt("Ton prénom ?",names[me]||"");
   if(n&&n.trim()){await ok(sb.from("profiles").update({name:n.trim()}).eq("id",me));load()}};
 $("#out").onclick=async()=>{await sb.auth.signOut();location.reload()};
