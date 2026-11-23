@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Kut · Équipe</title>
+<style>
+:root{--bg:#f6f2ea;--card:#fff;--tx:#1d1b18;--mu:#7a746b;--ac:#8a7766;--ln:#e4ddd0;--ur:#c0392b;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171513;--card:#242120;--tx:#f1ece4;--mu:#a39b90;--ac:#b49d88;--ln:#38332f;--ur:#ff6b5b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171513;--card:#242120;--tx:#f1ece4;--mu:#a39b90;--ac:#b49d88;--ln:#38332f;--ur:#ff6b5b;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,system-ui,"Segoe UI",sans-serif}
+header{padding:14px 16px 6px;font-weight:700;font-size:20px;display:flex;justify-content:space-between;align-items:center}
+header span button{margin-left:6px}
+nav{display:flex;gap:6px;padding:6px 12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:2}
+nav button{flex:1;padding:10px 4px;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:10px;font:inherit;font-size:14px}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{padding:8px 12px 40px;max-width:640px;margin:0 auto}
+.pane{display:none}.pane.on{display:block}
+form,.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px;margin:8px 0}
+form{display:flex;flex-direction:column;gap:8px}
+input,textarea,select{width:100%;padding:10px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+input[type=checkbox]{width:22px;height:22px;flex:none}
+.btn{padding:11px;border:0;border-radius:10px;background:var(--ac);color:#fff;font:inherit;font-weight:600}
+.sm{padding:6px 10px;border:1px solid var(--ln);border-radius:8px;background:var(--card);color:var(--tx);font-size:14px}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between}.grow{flex:1}
+.mu{color:var(--mu)}small.mu{display:block;margin-top:4px}
+.urg{border-color:var(--ur)}
+.task{display:flex;gap:10px;align-items:flex-start}.done .grow{text-decoration:line-through;opacity:.55}
+.x{background:none;border:0;color:var(--mu);font-size:16px;padding:4px 8px}
+h3{margin:16px 4px 4px;font-size:14px;text-transform:capitalize;color:var(--mu)}
+.bn{background:var(--ur);color:#fff;padding:8px 12px;border-radius:8px;margin:8px 0;display:none}
+label.ck{display:flex;gap:8px;align-items:center}
+#login{max-width:380px;margin:60px auto;padding:0 16px}
+#app{display:none}
+</style></head>
+<body>
+<div id="login">
+  <h1>✂️ Kut · Équipe</h1>
+  <form id="fl">
+    <input id="em" type="email" placeholder="Email" autocomplete="username" required>
+    <input id="pw" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
+    <button class="btn">Se connecter</button>
+    <small class="mu" id="le"></small>
+  </form>
+</div>
+
+<div id="app">
+<header><span>✂️ Kut · Équipe</span><span><button class="sm" id="nm">✏️ Prénom</button><button class="sm" id="out">Quitter</button></span></header>
+<nav><button data-t="m" class="on">💬 Messages</button><button data-t="t">✅ Tâches</button><button data-t="p">📅 Mon planning</button></nav>
+<main>
+<div id="bn" class="bn"></div>
+
+<section id="m" class="pane on">
+<form id="fm">
+<input id="mt" placeholder="Titre (ex : Devis à envoyer)" required>
+<textarea id="mx" rows="3" placeholder="Ton message… (astuce iPhone : micro 🎤 du clavier pour dicter)"></textarea>
+<label class="ck"><input type="checkbox" id="mu"> 🚨 Urgent</label>
+<button class="btn">Envoyer</button>
+</form>
+<div id="msgs"></div>
+</section>
+
+<section id="t" class="pane">
+<form id="ft">
+<input id="tt" placeholder="Tâche à faire" required>
+<select id="tto"></select>
+<input id="td" type="date">
+<button class="btn">Ajouter la tâche</button>
+</form>
+<select id="tf"><option value="all">Toutes les tâches</option><option value="me">Seulement les miennes</option></select>
+<div id="tl"></div>
+</section>
+
+<section id="p" class="pane">
+<p class="mu">Ici : tes tâches + tes notes perso. 🔒 Tes notes perso sont privées, personne d’autre ne les voit.</p>
+<form id="fp">
+<input id="pt" placeholder="Note perso (ex : Dentiste)" required>
+<div class="row"><input id="pd" type="date"><input id="ph" type="time"></div>
+<button class="btn">Ajouter à mon planning</button>
+</form>
+<div id="plan"></div>
+</section>
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const SB_URL="https://zbicdedhtfgiixvkdyem.supabase.co";
+const SB_KEY="sb_publishable_jQCMg-MK1fNZTYuieZzK8g_1-HBMAAk";
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const $=s=>document.querySelector(s);
+const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+let me,names={},ids=[],msgs=[],tasks=[],mine=[];
+const nm=id=>names[id]||"Quelqu’un";
+const fd=d=>d?new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}):"Sans date";
+const ft=s=>new Date(s).toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+const bn=t=>{const b=$("#bn");b.textContent=t;b.style.display="block";setTimeout(()=>b.style.display="none",5000)};
+const ok=async p=>{const r=await p;if(r.error)bn("Erreur : "+r.error.message);return r};
+
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button,.pane").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");$("#"+b.dataset.t).classList.add("on")});
+
+function renderMsgs(){const b=$("#msgs");b.replaceChildren();
+  if(!msgs.length){b.append(E("p","mu","Aucun message pour l’instant."));return}
+  for(const m of msgs){const c=E("div","card"+(m.urgent?" urg":""));const h=E("div","row");
+    h.append(E("b","",(m.urgent?"🚨 ":"")+m.title));
+    if(m.author===me){const x=E("button","x","✕");x.onclick=async()=>{await ok(sb.from("messages").delete().eq("id",m.id));load()};h.append(x)}
+    c.append(h);if(m.body)c.append(E("p","",m.body));
+    c.append(E("small","mu",nm(m.author)+" · "+ft(m.created_at)));b.append(c)}}
+
+function taskCard(t,showTo){const c=E("div","card task"+(t.done?" done":""));
+  const cb=E("input");cb.type="checkbox";cb.checked=t.done;
+  cb.onchange=async()=>{await ok(sb.from("tasks").update({done:cb.checked}).eq("id",t.id));load()};
+  const g=E("div","grow");g.append(E("div","",t.title));
+  g.append(E("small","mu",(showTo?"Pour "+nm(t.assignee)+" · ":"")+"de "+nm(t.created_by)+(t.due?" · "+fd(t.due):"")));
+  c.append(cb,g);return c}
+
+function renderTasks(){const b=$("#tl");b.replaceChildren();
+  const sel=$("#tto"),keep=sel.value;sel.replaceChildren();
+  for(const id of ids){const o=E("option","",id===me?"Pour moi":"Pour "+nm(id));o.value=id;sel.append(o)}
+  sel.value=keep||me;
+  const l=tasks.filter(t=>$("#tf").value==="all"||t.assignee===me);
+  l.sort((a,b)=>(a.done?1:0)-(b.done?1:0)||(a.due||"9").localeCompare(b.due||"9"));
+  if(!l.length){b.append(E("p","mu","Aucune tâche."));return}
+  l.forEach(t=>b.append(taskCard(t,true)))}
+
+function renderPlan(){const b=$("#plan");b.replaceChildren();
+  const it=[...tasks.filter(t=>t.assignee===me).map(o=>({k:"t",day:o.due||"",o})),
+            ...mine.map(o=>({k:"p",day:o.day||"",o}))];
+  if(!it.length){b.append(E("p","mu","Rien de prévu."));return}
+  it.sort((a,b)=>(a.day||"9").localeCompare(b.day||"9")||(a.o.at_time||"").localeCompare(b.o.at_time||""));
+  let last=null;
+  for(const i of it){
+    if(i.day!==last){b.append(E("h3","",fd(i.day)));last=i.day}
+    if(i.k==="t"){b.append(taskCard(i.o,false));continue}
+    const c=E("div","card row");
+    c.append(E("div","grow","🔒 "+(i.o.at_time?i.o.at_time.slice(0,5)+" · ":"")+i.o.title));
+    const x=E("button","x","✕");x.onclick=async()=>{await ok(sb.from("plan").delete().eq("id",i.o.id));load()};
+    c.append(x);b.append(c)}}
+
+async function load(){
+  const [p,m,t,pl]=await Promise.all([
+    sb.from("profiles").select("id,name"),
+    sb.from("messages").select("*").order("created_at",{ascending:false}).limit(50),
+    sb.from("tasks").select("*").order("created_at",{ascending:false}),
+    sb.from("plan").select("*")]);
+  ids=(p.data||[]).map(x=>x.id);names={};(p.data||[]).forEach(x=>names[x.id]=x.name);
+  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];
+  renderMsgs();renderTasks();renderPlan()}
+
+$("#tf").onchange=renderTasks;
+$("#fm").onsubmit=async e=>{e.preventDefault();
+  await ok(sb.from("messages").insert({title:$("#mt").value.trim(),body:$("#mx").value.trim(),urgent:$("#mu").checked}));
+  e.target.reset();load()};
+$("#ft").onsubmit=async e=>{e.preventDefault();
+  await ok(sb.from("tasks").insert({title:$("#tt").value.trim(),assignee:$("#tto").value,due:$("#td").value||null}));
+  $("#tt").value="";$("#td").value="";load()};
+$("#fp").onsubmit=async e=>{e.preventDefault();
+  await ok(sb.from("plan").insert({title:$("#pt").value.trim(),day:$("#pd").value||null,at_time:$("#ph").value||null}));
+  e.target.reset();load()};
+$("#nm").onclick=async()=>{const n=prompt("Ton prénom ?",names[me]||"");
+  if(n&&n.trim()){await ok(sb.from("profiles").update({name:n.trim()}).eq("id",me));load()}};
+$("#out").onclick=async()=>{await sb.auth.signOut();location.reload()};
+
+$("#fl").onsubmit=async e=>{e.preventDefault();$("#le").textContent="";
+  const {error}=await sb.auth.signInWithPassword({email:$("#em").value.trim(),password:$("#pw").value});
+  if(error)$("#le").textContent="Email ou mot de passe incorrect.";else start()};
+
+async function start(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session)return;
+  me=session.user.id;$("#login").style.display="none";$("#app").style.display="block";
+  await load();
+  sb.channel("kut").on("postgres_changes",{event:"*",schema:"public",table:"messages"},load)
+    .on("postgres_changes",{event:"*",schema:"public",table:"tasks"},load).subscribe()}
+start();
+</script>
+</body></html>
