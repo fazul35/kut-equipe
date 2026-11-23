@@ -46,11 +46,15 @@ input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);bo
 .bn{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:16px;right:16px;background:var(--ur);color:#fff;padding:12px 16px;border-radius:14px;display:none;z-index:20}
 .cm{display:flex;margin:6px 0}.cm.me{justify-content:flex-end}
 .bub{max-width:84%;background:var(--card);border-radius:18px;padding:10px 14px;overflow-wrap:anywhere}
-.cm.me .bub{background:var(--be);color:var(--bt)}.cm.me .mu{color:#5b4f3e}
+.cm.me .bub{background:var(--be);color:var(--bt)}.cm.me .mu{color:#5b4f3e}.cm .x{font-size:14px;padding:6px 0 0;display:block}.cm.me .x{color:#5b4f3e}
 .cbar{position:fixed;left:0;right:0;bottom:0;display:none;gap:10px;align-items:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:#000;z-index:5}
 .cbar input{flex:1;height:50px;border-radius:26px;padding:0 20px;background:var(--card)}
 body.inchat .bar{display:none}body.inchat .cbar{display:flex}
 #chat{padding-bottom:110px}
+.late small{color:var(--ur)}
+.pill{background:var(--be);color:var(--bt)!important;border-radius:12px;padding:1px 10px;font-weight:700}
+.sum b{display:block;margin-top:10px}.sum b:first-child{margin-top:0}.sum p{margin:3px 0}
+.lbl{display:block;text-align:center;cursor:pointer;margin-bottom:8px}
 #login{max-width:380px;margin:70px auto;padding:0 18px}
 #login form{display:flex;flex-direction:column;gap:12px}
 #app{display:none}
@@ -74,15 +78,24 @@ body.inchat .bar{display:none}body.inchat .cbar{display:flex}
   <div id="hm">
     <div class="ban"><div><b>Aujourd’hui</b><small id="bs"></small></div><button data-go="tasks">Voir</button></div>
     <nav class="menu">
-      <button data-go="chat">💬 Chat d’équipe</button>
+      <button data-go="chat">💬 Chat d’équipe <em id="c0"></em></button>
       <button data-go="msgs">📌 Messages <em id="c1"></em></button>
       <button data-go="tasks">✅ Tâches <em id="c2"></em></button>
       <button data-go="plan">📅 Mon planning <em id="c3"></em></button>
+      <button data-go="docs">📁 Documents <em id="c4"></em></button>
     </nav>
+    <h4>Résumé du jour</h4>
+    <div id="sum" class="card sum"></div>
     <h4>Derniers messages</h4>
     <div id="recent"></div>
   </div>
   <div id="res"></div>
+</section>
+
+<section id="docs" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Documents</b><span style="width:48px"></span></div>
+  <label class="btn lbl">📎 Ajouter un fichier<input type="file" id="fi" hidden></label>
+  <div id="dl"></div>
 </section>
 
 <section id="chat" class="scr">
@@ -146,13 +159,17 @@ body.inchat .bar{display:none}body.inchat .cbar{display:flex}
 const sb=supabase.createClient("https://zbicdedhtfgiixvkdyem.supabase.co","sb_publishable_jQCMg-MK1fNZTYuieZzK8g_1-HBMAAk");
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-let me,names={},ids=[],msgs=[],tasks=[],mine=[],q="";
+let me,names={},ids=[],msgs=[],tasks=[],mine=[],docs=[],q="";
 const nm=id=>names[id]||"Quelqu’un";
 const fd=d=>d?new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}):"Sans date";
 const ft=s=>new Date(s).toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
 const bn=t=>{const b=$("#bn");b.textContent=t;b.style.display="block";setTimeout(()=>b.style.display="none",5000)};
+const toast=t=>{bn(t);try{navigator.vibrate&&navigator.vibrate(150)}catch(e){}};
+const today=()=>new Date().toLocaleDateString("sv-SE");
+const seen=k=>{try{return +localStorage.getItem("kut_"+k)||0}catch(e){return 0}};
+const mark=k=>{try{localStorage.setItem("kut_"+k,Date.now())}catch(e){}};
 const ok=async p=>{const r=await p;if(r.error)bn("Erreur : "+r.error.message);return r};
-const go=id=>{$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));document.body.classList.toggle("inchat",id==="chat");scrollTo(0,id==="chat"?9e5:0)};
+const go=id=>{$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));document.body.classList.toggle("inchat",id==="chat");scrollTo(0,id==="chat"?9e5:0);if(id==="chat"||id==="msgs"){mark(id);render()}if(id==="docs")load()};
 const openSheet=f=>{$("#sheet").className="sheet on "+f;$$(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.f===f))};
 const closeSheet=()=>$("#sheet").classList.remove("on");
 
@@ -179,19 +196,41 @@ function msgCard(m){const c=E("div","card"+(m.urgent?" urg":""));const h=E("div"
   if(m.audio_path)c.append(audioBtn(m.audio_path));
   c.append(E("small","mu",nm(m.author)+" · "+ft(m.created_at)));return c}
 
-function taskCard(t,showTo){const c=E("div","card task"+(t.done?" done":""));
+function taskCard(t,showTo){const c=E("div","card task"+(t.done?" done":"")+(!t.done&&t.due&&t.due<today()?" late":""));
   const cb=E("input");cb.type="checkbox";cb.checked=t.done;
   cb.onchange=async()=>{await ok(sb.from("tasks").update({done:cb.checked}).eq("id",t.id));load()};
   const g=E("div","grow");g.append(E("div","",t.title));
-  g.append(E("small","mu",(showTo?"Pour "+nm(t.assignee)+" · ":"")+"de "+nm(t.created_by)+(t.due?" · "+fd(t.due):"")));
+  g.append(E("small","mu",(!t.done&&t.due&&t.due<today()?"⚠️ En retard · ":"")+(showTo?"Pour "+nm(t.assignee)+" · ":"")+"de "+nm(t.created_by)+(t.due?" · "+fd(t.due):"")));
   c.append(cb,g);return c}
 
 function render(){
   $("#wn").textContent=names[me]||"Moi";$("#ini").textContent=(names[me]||"M")[0].toUpperCase();
-  const mo=tasks.filter(t=>t.assignee===me&&!t.done).length;
-  const ug=msgs.filter(m=>m.urgent&&Date.now()-new Date(m.created_at)<2592e5).length;
-  $("#bs").textContent=mo+" tâche"+(mo>1?"s":"")+" à faire · "+ug+" urgent"+(ug>1?"s":"");
-  $("#c1").textContent=msgs.length;$("#c2").textContent=tasks.filter(t=>!t.done).length;
+  const td=today(),mt=tasks.filter(t=>t.assignee===me&&!t.done);
+  const late=mt.filter(t=>t.due&&t.due<td),tod=mt.filter(t=>t.due===td),notes=mine.filter(x=>x.day===td);
+  const urg=msgs.filter(m=>m.urgent&&Date.now()-new Date(m.created_at)<2592e5);
+  $("#bs").textContent=late.length+" en retard · "+(tod.length+notes.length)+" aujourd’hui · "+urg.length+" urgent"+(urg.length>1?"s":"");
+  const sm=$("#sum");sm.replaceChildren();
+  const sec=(t,a)=>{if(!a.length)return;sm.append(E("b","",t));a.forEach(x=>sm.append(E("p","mu","• "+x)))};
+  sec("⚠️ En retard",late.map(t=>t.title+" ("+fd(t.due)+")"));
+  sec("📅 Aujourd’hui",[...tod.map(t=>t.title),...notes.map(x=>"🔒 "+(x.at_time?x.at_time.slice(0,5)+" · ":"")+x.title)]);
+  sec("🚨 Urgents récents",urg.map(m=>m.title+" · "+nm(m.author)));
+  if(!sm.childNodes.length)sm.append(E("p","mu","Rien d’urgent. Bonne journée 👌"));
+  const bd=(id,n)=>{const e=$(id);e.textContent=n||"";e.classList.toggle("pill",n>0)};
+  const nc=chatMsgs.filter(m=>m.author!==me&&new Date(m.created_at)>seen("chat")).length;
+  const nmg=msgs.filter(m=>m.author!==me&&new Date(m.created_at)>seen("msgs")).length;
+  bd("#c0",nc);bd("#c1",nmg);document.title=(nc+nmg?"("+(nc+nmg)+") ":"")+"Kut · Équipe";
+  $("#c2").textContent=tasks.filter(t=>!t.done).length;$("#c4").textContent=docs.length||"";
+  const dl=$("#dl");dl.replaceChildren();
+  for(const d of docs){const c=E("div","card row"),g=E("div","grow");
+    g.append(E("div","","📄 "+d.name),E("small","mu",nm(d.uploader)+" · "+ft(d.created_at)));
+    g.onclick=async()=>{const w=window.open("","_blank");
+      const r=await sb.storage.from("files").createSignedUrl(d.path,3600);
+      if(r.error){if(w)w.close();bn("Erreur : "+r.error.message);return}
+      if(w)w.location=r.data.signedUrl;else location.href=r.data.signedUrl};
+    c.append(g);
+    if(d.uploader===me){const x=E("button","x","✕");x.onclick=async()=>{if(confirm("Supprimer ce document ?")){await ok(sb.from("documents").delete().eq("id",d.id));load()}};c.append(x)}
+    dl.append(c)}
+  if(!docs.length)dl.append(E("p","mu","Aucun document."));
   $("#recent").replaceChildren(...msgs.slice(0,4).map(msgCard));
   const ml=$("#ml");ml.replaceChildren(...msgs.map(msgCard));if(!msgs.length)ml.append(E("p","mu","Aucun message."));
   const sel=$("#tto"),keep=sel.value;sel.replaceChildren();
@@ -218,6 +257,13 @@ function render(){
     r.append(...ms.map(msgCard),...ts.map(t=>taskCard(t,true)));
     if(!ms.length&&!ts.length)r.append(E("p","mu","Aucun résultat."))}}
 
+$("#fi").onchange=async e=>{const f=e.target.files[0];if(!f)return;
+  if(f.size>20e6){bn("Fichier trop gros (20 Mo maximum).");e.target.value="";return}
+  bn("Envoi en cours…");
+  const path="docs/"+me+"/"+Date.now()+"-"+f.name.replace(/[^A-Za-z0-9._-]/g,"_");
+  const u=await sb.storage.from("files").upload(path,f,{contentType:f.type||"application/octet-stream"});
+  if(u.error){bn("Erreur d’envoi : "+u.error.message);return}
+  await ok(sb.from("documents").insert({name:f.name,path}));e.target.value="";load()};
 let chatMsgs=[];
 function renderChat(){const c=$("#cl");c.replaceChildren();
   if(!chatMsgs.length)c.append(E("p","mu","Aucun message. Lance la discussion !"));
@@ -225,11 +271,19 @@ function renderChat(){const c=$("#cl");c.replaceChildren();
     if(m.author!==me)b.append(E("small","mu",nm(m.author)));
     if(m.body)b.append(E("div","",m.body));
     if(m.audio_path)b.append(audioBtn(m.audio_path));
-    b.append(E("small","mu",ft(m.created_at)));w.append(b);c.append(w)}
-  if($("#chat").classList.contains("on"))scrollTo(0,9e5)}
+    b.append(E("small","mu",ft(m.created_at)));
+    if(m.author===me){const x=E("button","x","🗑️ Supprimer");
+      x.onclick=async()=>{if(confirm("Supprimer ce message du chat ?")){await ok(sb.from("chat").delete().eq("id",m.id));loadChat()}};
+      b.append(x)}
+    w.append(b);c.append(w)}
+  if($("#chat").classList.contains("on")){mark("chat");scrollTo(0,9e5)}}
 async function loadChat(){
   const r=await sb.from("chat").select("*").order("created_at",{ascending:false}).limit(100);
-  chatMsgs=(r.data||[]).reverse();renderChat()}
+  const old=chatMsgs.length?chatMsgs[chatMsgs.length-1].created_at:null;
+  chatMsgs=(r.data||[]).reverse();
+  const nw=chatMsgs.filter(m=>old&&m.created_at>old&&m.author!==me);
+  if(nw.length&&!$("#chat").classList.contains("on")){const m=nw[nw.length-1];toast("💬 "+nm(m.author)+" : "+(m.body||"🎤 vocal"))}
+  renderChat();render()}
 $("#cf").onsubmit=async e=>{e.preventDefault();const t=$("#ci").value.trim();if(!t)return;
   $("#ci").value="";await ok(sb.from("chat").insert({body:t}));loadChat()};
 let cmr,cch=[];
@@ -249,13 +303,18 @@ $("#cmic").onclick=async()=>{
   }catch(e){bn("Micro refusé : autorise le micro pour ce site dans les réglages.")}};
 
 async function load(){
-  const [p,m,t,pl]=await Promise.all([
+  const lastM=msgs[0]?msgs[0].created_at:null;
+  const [p,m,t,pl,d]=await Promise.all([
     sb.from("profiles").select("id,name"),
     sb.from("messages").select("*").order("created_at",{ascending:false}).limit(50),
     sb.from("tasks").select("*").order("created_at",{ascending:false}),
-    sb.from("plan").select("*")]);
+    sb.from("plan").select("*"),
+    sb.from("documents").select("*").order("created_at",{ascending:false})]);
   ids=(p.data||[]).map(x=>x.id);names={};(p.data||[]).forEach(x=>names[x.id]=x.name);
-  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];render();renderChat()}
+  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];docs=d.data||[];
+  const nw=msgs.filter(x=>lastM&&x.created_at>lastM&&x.author!==me);
+  if(nw.length)toast((nw[0].urgent?"🚨 Urgent : ":"📌 ")+nm(nw[0].author)+" : "+nw[0].title);
+  render();renderChat()}
 
 $("#tf").onchange=render;
 $("#q").oninput=e=>{q=e.target.value;if(q.trim())go("home");render()};
@@ -305,7 +364,8 @@ async function start(){
   await load();await loadChat();
   sb.channel("kut").on("postgres_changes",{event:"*",schema:"public",table:"messages"},load)
     .on("postgres_changes",{event:"*",schema:"public",table:"tasks"},load)
-    .on("postgres_changes",{event:"*",schema:"public",table:"chat"},loadChat).subscribe()}
+    .on("postgres_changes",{event:"*",schema:"public",table:"chat"},loadChat)
+    .on("postgres_changes",{event:"*",schema:"public",table:"documents"},load).subscribe()}
 start();
 </script>
 </body></html>
