@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+<title>Kut · Équipe</title>
+<style>
+:root{--bg:#000;--card:#1a1a1a;--tx:#f5f1ea;--mu:#a8a196;--be:#d8c4a6;--bt:#1a1510;--ln:#2c2a27;--ur:#ff6b5b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg)}
+body{color:var(--tx);font:17px/1.4 -apple-system,system-ui,"Segoe UI",sans-serif}
+button{font:inherit;color:var(--tx);cursor:pointer}
+.scr{display:none;padding:12px 16px 130px;max-width:640px;margin:0 auto}.scr.on{display:block}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
+.top b{font-size:22px}
+.av{display:flex;align-items:center;gap:10px;background:none;border:0;font-size:24px;font-weight:600;padding:0}
+.av i{width:52px;height:52px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-style:normal;font-size:22px}
+.rb{width:48px;height:48px;border-radius:50%;border:1px solid var(--ln);background:var(--card);font-size:20px;flex:none}
+.ban{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--be);color:var(--bt);border-radius:40px;padding:16px 16px 16px 24px;margin:8px 0 18px}
+.ban b{font-size:21px}.ban small{display:block;opacity:.8;font-size:15px}
+.ban button{background:var(--bt);color:var(--be);border:0;border-radius:30px;padding:12px 20px;font-weight:600}
+.menu button{display:flex;gap:16px;align-items:center;width:100%;padding:15px 4px;background:none;border:0;font-size:23px;text-align:left}
+.menu em{margin-left:auto;font-style:normal;color:var(--mu);font-size:16px}
+h4{color:var(--mu);font-weight:500;font-size:20px;margin:24px 4px 8px;text-transform:capitalize}
+.card{background:var(--card);border-radius:20px;padding:16px;margin:10px 0}
+.card p{margin:6px 0}.urg{border:1px solid var(--ur)}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between}.grow{flex:1}
+.mu{color:var(--mu)}small.mu{display:block;margin-top:4px;font-size:14px}
+.task{display:flex;gap:12px;align-items:flex-start}.done .grow{text-decoration:line-through;opacity:.5}
+input[type=checkbox]{width:24px;height:24px;flex:none;accent-color:var(--be)}
+.x{background:none;border:0;color:var(--mu);font-size:18px;padding:4px 8px}
+.sm{padding:9px 14px;border:1px solid var(--ln);border-radius:14px;background:var(--card);font-size:15px}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);border-radius:14px;background:#0d0d0d;color:var(--tx);font:inherit}
+.btn{padding:14px;border:0;border-radius:16px;background:var(--be);color:var(--bt);font-weight:700;font-size:17px}
+.bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;align-items:center;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,#000 40%);z-index:5}
+.bar input{flex:1;height:54px;border-radius:30px;padding:0 22px;background:var(--card)}
+.pl{width:58px;height:58px;border-radius:50%;border:0;background:var(--be);color:var(--bt);font-size:24px;flex:none}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;z-index:9}.sheet.on{display:flex}
+.sh{background:#121110;border-radius:26px 26px 0 0;width:100%;max-width:640px;margin:0 auto;padding:16px 16px calc(22px + env(safe-area-inset-bottom,0px));max-height:92vh;overflow:auto}
+.tabs{display:flex;gap:6px;margin-bottom:14px}.tabs button{flex:1;padding:11px 4px;border:1px solid var(--ln);border-radius:14px;background:var(--card);font-size:15px}
+.tabs button.on{background:var(--be);color:var(--bt);border-color:var(--be)}
+.sh form{display:none;flex-direction:column;gap:10px}
+.sheet.fm #fm,.sheet.ft #ft,.sheet.fp #fp{display:flex}
+.ck{display:flex;gap:10px;align-items:center}
+.pop{position:fixed;top:calc(env(safe-area-inset-top,0px) + 76px);left:16px;background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:6px;display:none;z-index:8}
+.pop button{display:block;width:100%;background:none;border:0;padding:14px 18px;text-align:left;font-size:18px}
+.bn{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:16px;right:16px;background:var(--ur);color:#fff;padding:12px 16px;border-radius:14px;display:none;z-index:20}
+.cm{display:flex;margin:6px 0}.cm.me{justify-content:flex-end}
+.bub{max-width:84%;background:var(--card);border-radius:18px;padding:10px 14px;overflow-wrap:anywhere}
+.cm.me .bub{background:var(--be);color:var(--bt)}.cm.me .mu{color:#5b4f3e}.cm .x{font-size:14px;padding:6px 0 0;display:block}.cm.me .x{color:#5b4f3e}
+.cbar{position:fixed;left:0;right:0;bottom:0;display:none;gap:10px;align-items:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:#000;z-index:5}
+.cbar input{flex:1;height:50px;border-radius:26px;padding:0 20px;background:var(--card)}
+body.inchat .bar{display:none}body.inchat .cbar{display:flex}
+#chat{padding-bottom:110px}
+.late small{color:var(--ur)}
+.pill{background:var(--be);color:var(--bt)!important;border-radius:12px;padding:1px 10px;font-weight:700}
+.sum b{display:block;margin-top:10px}.sum b:first-child{margin-top:0}.sum p{margin:3px 0}
+.lbl{display:block;text-align:center;cursor:pointer;margin-bottom:8px}
+#login{max-width:380px;margin:70px auto;padding:0 18px}
+#login form{display:flex;flex-direction:column;gap:12px}
+#app{display:none}
+</style></head>
+<body>
+<div id="login">
+  <h1>✂️ Kut · Équipe</h1>
+  <form id="fl">
+    <input id="em" type="email" placeholder="Email" autocomplete="username" required>
+    <input id="pw" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
+    <button class="btn">Se connecter</button>
+    <small class="mu" id="le"></small>
+  </form>
+</div>
+
+<div id="app">
+<div id="bn" class="bn"></div>
+
+<section id="home" class="scr on">
+  <div class="top"><button class="av" id="who"><i id="ini">F</i><span id="wn"></span> ▾</button><button class="rb" id="rf">↻</button></div>
+  <div id="hm">
+    <div class="ban"><div><b>Aujourd’hui</b><small id="bs"></small></div><button data-go="tasks">Voir</button></div>
+    <nav class="menu">
+      <button data-go="chat">💬 Chat d’équipe <em id="c0"></em></button>
+      <button data-go="msgs">📌 Messages <em id="c1"></em></button>
+      <button data-go="tasks">✅ Tâches <em id="c2"></em></button>
+      <button data-go="plan">📅 Mon planning <em id="c3"></em></button>
+      <button data-go="docs">📁 Documents <em id="c4"></em></button>
+    </nav>
+    <h4>Résumé du jour</h4>
+    <div id="sum" class="card sum"></div>
+    <h4>Derniers messages</h4>
+    <div id="recent"></div>
+  </div>
+  <div id="res"></div>
+</section>
+
+<section id="docs" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Documents</b><span style="width:48px"></span></div>
+  <label class="btn lbl">📎 Ajouter un fichier<input type="file" id="fi" hidden></label>
+  <div id="dl"></div>
+</section>
+
+<section id="chat" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Chat d’équipe</b><span style="width:48px"></span></div>
+  <div id="cl"></div>
+</section>
+
+<section id="msgs" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Messages</b><span style="width:48px"></span></div>
+  <div id="ml"></div>
+</section>
+
+<section id="tasks" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Tâches</b><span style="width:48px"></span></div>
+  <select id="tf"><option value="me">Mes tâches</option><option value="all">Toutes les tâches</option></select>
+  <div id="tl"></div>
+</section>
+
+<section id="plan" class="scr">
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Mon planning</b><span style="width:48px"></span></div>
+  <p class="mu">🔒 Tes notes perso sont privées : personne d’autre ne les voit.</p>
+  <div id="pl"></div>
+</section>
+
+<div class="bar">
+  <button class="rb" id="gear">⚙️</button>
+  <input id="q" type="search" placeholder="Rechercher">
+  <button class="pl" id="plus">✏️</button>
+</div>
+
+<form class="cbar" id="cf"><button type="button" class="rb" id="cmic">🎤</button><input id="ci" placeholder="Écris un message…" autocomplete="off"><button class="pl" style="width:50px;height:50px;font-size:20px">➤</button></form>
+
+<div id="pop" class="pop"><button id="nm">✏️ Changer mon prénom</button><button id="out">↩︎ Se déconnecter</button></div>
+
+<div id="sheet" class="sheet"><div class="sh">
+  <div class="tabs"><button data-f="fm">💬 Message</button><button data-f="ft">✅ Tâche</button><button data-f="fp">📅 Note perso</button></div>
+  <form id="fm">
+    <input id="mt" placeholder="Titre (ex : Devis à envoyer)" required>
+    <textarea id="mx" rows="3" placeholder="Ton message… (iPhone : micro 🎤 du clavier pour dicter)"></textarea>
+    <div class="row"><button type="button" class="sm grow" id="rec">🎤 Enregistrer un vocal</button><span id="rt" class="mu"></span></div>
+    <audio id="rp" controls style="display:none;width:100%"></audio>
+    <label class="ck"><input type="checkbox" id="mu"> 🚨 Urgent</label>
+    <button class="btn">Envoyer</button>
+  </form>
+  <form id="ft">
+    <input id="tt" placeholder="Tâche à faire" required>
+    <select id="tto"></select>
+    <input id="td" type="date">
+    <button class="btn">Ajouter la tâche</button>
+  </form>
+  <form id="fp">
+    <input id="pt" placeholder="Note perso (ex : Dentiste)" required>
+    <div class="row"><input id="pd" type="date"><input id="ph" type="time"></div>
+    <button class="btn">Ajouter à mon planning</button>
+  </form>
+</div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const sb=supabase.createClient("https://zbicdedhtfgiixvkdyem.supabase.co","sb_publishable_jQCMg-MK1fNZTYuieZzK8g_1-HBMAAk");
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+let me,names={},ids=[],msgs=[],tasks=[],mine=[],docs=[],q="";
+const nm=id=>names[id]||"Quelqu’un";
+const fd=d=>d?new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}):"Sans date";
+const ft=s=>new Date(s).toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+const bn=t=>{const b=$("#bn");b.textContent=t;b.style.display="block";setTimeout(()=>b.style.display="none",5000)};
+const toast=t=>{bn(t);try{navigator.vibrate&&navigator.vibrate(150)}catch(e){}};
+const today=()=>new Date().toLocaleDateString("sv-SE");
+const seen=k=>{try{return +localStorage.getItem("kut_"+k)||0}catch(e){return 0}};
+const mark=k=>{try{localStorage.setItem("kut_"+k,Date.now())}catch(e){}};
+const ok=async p=>{const r=await p;if(r.error)bn("Erreur : "+r.error.message);return r};
+const go=id=>{$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));document.body.classList.toggle("inchat",id==="chat");scrollTo(0,id==="chat"?9e5:0);if(id==="chat"||id==="msgs"){mark(id);render()}if(id==="docs")load()};
+const openSheet=f=>{$("#sheet").className="sheet on "+f;$$(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.f===f))};
+const closeSheet=()=>$("#sheet").classList.remove("on");
+
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-go]");if(g)go(g.dataset.go);
+  const t=e.target.closest(".tabs button");if(t)openSheet(t.dataset.f);
+  if(e.target.id==="sheet")closeSheet();
+  if(!e.target.closest("#pop,#who,#gear"))$("#pop").style.display="none"});
+$("#who").onclick=$("#gear").onclick=()=>{const p=$("#pop");p.style.display=p.style.display==="block"?"none":"block"};
+$("#plus").onclick=()=>openSheet("fm");
+$("#rf").onclick=()=>load();
+
+function audioBtn(path){const a=E("audio");a.controls=true;a.style.width="100%";a.preload="none";
+  const bt=E("button","sm","▶️ Écouter le vocal");
+  bt.onclick=async()=>{const r=await sb.storage.from("files").createSignedUrl(path,3600);
+    if(r.error){bn("Erreur : "+r.error.message);return}
+    a.src=r.data.signedUrl;bt.replaceWith(a);a.play().catch(()=>{})};
+  return bt}
+
+function msgCard(m){const c=E("div","card"+(m.urgent?" urg":""));const h=E("div","row");
+  h.append(E("b","",(m.urgent?"🚨 ":"")+m.title));
+  if(m.author===me){const x=E("button","x","✕");x.onclick=async()=>{if(confirm("Supprimer ce message ?")){await ok(sb.from("messages").delete().eq("id",m.id));load()}};h.append(x)}
+  c.append(h);if(m.body)c.append(E("p","",m.body));
+  if(m.audio_path)c.append(audioBtn(m.audio_path));
+  c.append(E("small","mu",nm(m.author)+" · "+ft(m.created_at)));return c}
+
+function taskCard(t,showTo){const c=E("div","card task"+(t.done?" done":"")+(!t.done&&t.due&&t.due<today()?" late":""));
+  const cb=E("input");cb.type="checkbox";cb.checked=t.done;
+  cb.onchange=async()=>{await ok(sb.from("tasks").update({done:cb.checked}).eq("id",t.id));load()};
+  const g=E("div","grow");g.append(E("div","",t.title));
+  g.append(E("small","mu",(!t.done&&t.due&&t.due<today()?"⚠️ En retard · ":"")+(showTo?"Pour "+nm(t.assignee)+" · ":"")+"de "+nm(t.created_by)+(t.due?" · "+fd(t.due):"")));
+  c.append(cb,g);return c}
+
+function render(){
+  $("#wn").textContent=names[me]||"Moi";$("#ini").textContent=(names[me]||"M")[0].toUpperCase();
+  const td=today(),mt=tasks.filter(t=>t.assignee===me&&!t.done);
+  const late=mt.filter(t=>t.due&&t.due<td),tod=mt.filter(t=>t.due===td),notes=mine.filter(x=>x.day===td);
+  const urg=msgs.filter(m=>m.urgent&&Date.now()-new Date(m.created_at)<2592e5);
+  $("#bs").textContent=late.length+" en retard · "+(tod.length+notes.length)+" aujourd’hui · "+urg.length+" urgent"+(urg.length>1?"s":"");
+  const sm=$("#sum");sm.replaceChildren();
+  const sec=(t,a)=>{if(!a.length)return;sm.append(E("b","",t));a.forEach(x=>sm.append(E("p","mu","• "+x)))};
+  sec("⚠️ En retard",late.map(t=>t.title+" ("+fd(t.due)+")"));
+  sec("📅 Aujourd’hui",[...tod.map(t=>t.title),...notes.map(x=>"🔒 "+(x.at_time?x.at_time.slice(0,5)+" · ":"")+x.title)]);
+  sec("🚨 Urgents récents",urg.map(m=>m.title+" · "+nm(m.author)));
+  if(!sm.childNodes.length)sm.append(E("p","mu","Rien d’urgent. Bonne journée 👌"));
+  const bd=(id,n)=>{const e=$(id);e.textContent=n||"";e.classList.toggle("pill",n>0)};
+  const nc=chatMsgs.filter(m=>m.author!==me&&new Date(m.created_at)>seen("chat")).length;
+  const nmg=msgs.filter(m=>m.author!==me&&new Date(m.created_at)>seen("msgs")).length;
+  bd("#c0",nc);bd("#c1",nmg);document.title=(nc+nmg?"("+(nc+nmg)+") ":"")+"Kut · Équipe";
+  $("#c2").textContent=tasks.filter(t=>!t.done).length;$("#c4").textContent=docs.length||"";
+  const dl=$("#dl");dl.replaceChildren();
+  for(const d of docs){const c=E("div","card row"),g=E("div","grow");
+    g.append(E("div","","📄 "+d.name),E("small","mu",nm(d.uploader)+" · "+ft(d.created_at)));
+    g.onclick=async()=>{const w=window.open("","_blank");
+      const r=await sb.storage.from("files").createSignedUrl(d.path,3600);
+      if(r.error){if(w)w.close();bn("Erreur : "+r.error.message);return}
+      if(w)w.location=r.data.signedUrl;else location.href=r.data.signedUrl};
+    c.append(g);
+    if(d.uploader===me){const x=E("button","x","✕");x.onclick=async()=>{if(confirm("Supprimer ce document ?")){await ok(sb.from("documents").delete().eq("id",d.id));load()}};c.append(x)}
+    dl.append(c)}
+  if(!docs.length)dl.append(E("p","mu","Aucun document."));
+  $("#recent").replaceChildren(...msgs.slice(0,4).map(msgCard));
+  const ml=$("#ml");ml.replaceChildren(...msgs.map(msgCard));if(!msgs.length)ml.append(E("p","mu","Aucun message."));
+  const sel=$("#tto"),keep=sel.value;sel.replaceChildren();
+  for(const id of ids){const o=E("option","",id===me?"Pour moi":"Pour "+nm(id));o.value=id;sel.append(o)}
+  sel.value=keep||me;
+  const l=tasks.filter(t=>$("#tf").value==="all"||t.assignee===me);
+  l.sort((a,b)=>(a.done?1:0)-(b.done?1:0)||(a.due||"9").localeCompare(b.due||"9"));
+  const tl=$("#tl");tl.replaceChildren(...l.map(t=>taskCard(t,true)));if(!l.length)tl.append(E("p","mu","Aucune tâche."));
+  const it=[...tasks.filter(t=>t.assignee===me).map(o=>({k:"t",day:o.due||"",o})),...mine.map(o=>({k:"p",day:o.day||"",o}))];
+  $("#c3").textContent=it.length;
+  it.sort((a,b)=>(a.day||"9").localeCompare(b.day||"9")||(a.o.at_time||"").localeCompare(b.o.at_time||""));
+  const pl=$("#pl");pl.replaceChildren();let last=null;
+  for(const i of it){
+    if(i.day!==last){pl.append(E("h4","",fd(i.day)));last=i.day}
+    if(i.k==="t"){pl.append(taskCard(i.o,false));continue}
+    const c=E("div","card row");
+    c.append(E("div","grow","🔒 "+(i.o.at_time?i.o.at_time.slice(0,5)+" · ":"")+i.o.title));
+    const x=E("button","x","✕");x.onclick=async()=>{await ok(sb.from("plan").delete().eq("id",i.o.id));load()};
+    c.append(x);pl.append(c)}
+  if(!it.length)pl.append(E("p","mu","Rien de prévu."));
+  const k=q.trim().toLowerCase(),r=$("#res");r.replaceChildren();$("#hm").style.display=k?"none":"block";
+  if(k){const ms=msgs.filter(m=>(m.title+" "+(m.body||"")).toLowerCase().includes(k));
+    const ts=tasks.filter(t=>t.title.toLowerCase().includes(k));
+    r.append(...ms.map(msgCard),...ts.map(t=>taskCard(t,true)));
+    if(!ms.length&&!ts.length)r.append(E("p","mu","Aucun résultat."))}}
+
+$("#fi").onchange=async e=>{const f=e.target.files[0];if(!f)return;
+  if(f.size>20e6){bn("Fichier trop gros (20 Mo maximum).");e.target.value="";return}
+  bn("Envoi en cours…");
+  const path="docs/"+me+"/"+Date.now()+"-"+f.name.replace(/[^A-Za-z0-9._-]/g,"_");
+  const u=await sb.storage.from("files").upload(path,f,{contentType:f.type||"application/octet-stream"});
+  if(u.error){bn("Erreur d’envoi : "+u.error.message);return}
+  await ok(sb.from("documents").insert({name:f.name,path}));e.target.value="";load()};
+let chatMsgs=[];
+function renderChat(){const c=$("#cl");c.replaceChildren();
+  if(!chatMsgs.length)c.append(E("p","mu","Aucun message. Lance la discussion !"));
+  for(const m of chatMsgs){const w=E("div","cm"+(m.author===me?" me":""));const b=E("div","bub");
+    if(m.author!==me)b.append(E("small","mu",nm(m.author)));
+    if(m.body)b.append(E("div","",m.body));
+    if(m.audio_path)b.append(audioBtn(m.audio_path));
+    b.append(E("small","mu",ft(m.created_at)));
+    if(m.author===me){const x=E("button","x","🗑️ Supprimer");
+      x.onclick=async()=>{if(confirm("Supprimer ce message du chat ?")){await ok(sb.from("chat").delete().eq("id",m.id));loadChat()}};
+      b.append(x)}
+    w.append(b);c.append(w)}
+  if($("#chat").classList.contains("on")){mark("chat");scrollTo(0,9e5)}}
+async function loadChat(){
+  const r=await sb.from("chat").select("*").order("created_at",{ascending:false}).limit(100);
+  const old=chatMsgs.length?chatMsgs[chatMsgs.length-1].created_at:null;
+  chatMsgs=(r.data||[]).reverse();
+  const nw=chatMsgs.filter(m=>old&&m.created_at>old&&m.author!==me);
+  if(nw.length&&!$("#chat").classList.contains("on")){const m=nw[nw.length-1];toast("💬 "+nm(m.author)+" : "+(m.body||"🎤 vocal"))}
+  renderChat();render()}
+$("#cf").onsubmit=async e=>{e.preventDefault();const t=$("#ci").value.trim();if(!t)return;
+  $("#ci").value="";await ok(sb.from("chat").insert({body:t}));loadChat()};
+let cmr,cch=[];
+$("#cmic").onclick=async()=>{
+  if(cmr&&cmr.state==="recording"){cmr.stop();return}
+  try{
+    const st=await navigator.mediaDevices.getUserMedia({audio:true});
+    const mt=MediaRecorder.isTypeSupported("audio/mp4")?"audio/mp4":"audio/webm";
+    cmr=new MediaRecorder(st,{mimeType:mt});cch=[];
+    cmr.ondataavailable=e=>{if(e.data.size)cch.push(e.data)};
+    cmr.onstop=async()=>{st.getTracks().forEach(t=>t.stop());$("#cmic").textContent="🎤";
+      const b=new Blob(cch,{type:mt}),ap="audio/"+me+"/"+Date.now()+"."+(mt.includes("mp4")?"m4a":"webm");
+      const u=await sb.storage.from("files").upload(ap,b,{contentType:mt});
+      if(u.error){bn("Erreur d’envoi du vocal : "+u.error.message);return}
+      await ok(sb.from("chat").insert({audio_path:ap}));loadChat()};
+    cmr.start();$("#cmic").textContent="⏹️";
+  }catch(e){bn("Micro refusé : autorise le micro pour ce site dans les réglages.")}};
+
+async function load(){
+  const lastM=msgs[0]?msgs[0].created_at:null;
+  const [p,m,t,pl,d]=await Promise.all([
+    sb.from("profiles").select("id,name"),
+    sb.from("messages").select("*").order("created_at",{ascending:false}).limit(50),
+    sb.from("tasks").select("*").order("created_at",{ascending:false}),
+    sb.from("plan").select("*"),
+    sb.from("documents").select("*").order("created_at",{ascending:false})]);
+  ids=(p.data||[]).map(x=>x.id);names={};(p.data||[]).forEach(x=>names[x.id]=x.name);
+  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];docs=d.data||[];
+  const nw=msgs.filter(x=>lastM&&x.created_at>lastM&&x.author!==me);
+  if(nw.length)toast((nw[0].urgent?"🚨 Urgent : ":"📌 ")+nm(nw[0].author)+" : "+nw[0].title);
+  render();renderChat()}
+
+$("#tf").onchange=render;
+$("#q").oninput=e=>{q=e.target.value;if(q.trim())go("home");render()};
+
+let mr,chunks=[],blob=null,tick,t0;
+$("#rec").onclick=async()=>{
+  if(mr&&mr.state==="recording"){mr.stop();return}
+  try{
+    const st=await navigator.mediaDevices.getUserMedia({audio:true});
+    const mt=MediaRecorder.isTypeSupported("audio/mp4")?"audio/mp4":"audio/webm";
+    mr=new MediaRecorder(st,{mimeType:mt});chunks=[];blob=null;
+    mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+    mr.onstop=()=>{st.getTracks().forEach(t=>t.stop());clearInterval(tick);
+      blob=new Blob(chunks,{type:mt});const p=$("#rp");p.src=URL.createObjectURL(blob);p.style.display="block";
+      $("#rec").textContent="🎤 Refaire le vocal";$("#rt").textContent=""};
+    mr.start();t0=Date.now();$("#rec").textContent="⏹️ Arrêter";
+    tick=setInterval(()=>$("#rt").textContent=Math.floor((Date.now()-t0)/1000)+" s",500);
+  }catch(e){bn("Micro refusé : autorise le micro pour ce site dans les réglages.")}};
+
+$("#fm").onsubmit=async e=>{e.preventDefault();
+  if(mr&&mr.state==="recording"){bn("Appuie d’abord sur « Arrêter ».");return}
+  let ap=null;
+  if(blob){const ext=blob.type.includes("mp4")?"m4a":"webm";ap="audio/"+me+"/"+Date.now()+"."+ext;
+    const u=await sb.storage.from("files").upload(ap,blob,{contentType:blob.type});
+    if(u.error){bn("Erreur d’envoi du vocal : "+u.error.message);return}}
+  const r=await ok(sb.from("messages").insert({title:$("#mt").value.trim(),body:$("#mx").value.trim(),urgent:$("#mu").checked,audio_path:ap}));
+  if(r.error)return;
+  e.target.reset();blob=null;$("#rp").style.display="none";$("#rec").textContent="🎤 Enregistrer un vocal";closeSheet();go("msgs");load()};
+$("#ft").onsubmit=async e=>{e.preventDefault();
+  await ok(sb.from("tasks").insert({title:$("#tt").value.trim(),assignee:$("#tto").value,due:$("#td").value||null}));
+  $("#tt").value="";$("#td").value="";closeSheet();go("tasks");load()};
+$("#fp").onsubmit=async e=>{e.preventDefault();
+  await ok(sb.from("plan").insert({title:$("#pt").value.trim(),day:$("#pd").value||null,at_time:$("#ph").value||null}));
+  e.target.reset();closeSheet();go("plan");load()};
+$("#nm").onclick=async()=>{const n=prompt("Ton prénom ?",names[me]||"");
+  if(n&&n.trim()){await ok(sb.from("profiles").update({name:n.trim()}).eq("id",me));load()}};
+$("#out").onclick=async()=>{await sb.auth.signOut();location.reload()};
+
+$("#fl").onsubmit=async e=>{e.preventDefault();$("#le").textContent="";
+  const {error}=await sb.auth.signInWithPassword({email:$("#em").value.trim(),password:$("#pw").value});
+  if(error)$("#le").textContent="Email ou mot de passe incorrect.";else start()};
+
+async function start(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session)return;
+  me=session.user.id;$("#login").style.display="none";$("#app").style.display="block";
+  await load();await loadChat();
+  sb.channel("kut").on("postgres_changes",{event:"*",schema:"public",table:"messages"},load)
+    .on("postgres_changes",{event:"*",schema:"public",table:"tasks"},load)
+    .on("postgres_changes",{event:"*",schema:"public",table:"chat"},loadChat)
+    .on("postgres_changes",{event:"*",schema:"public",table:"documents"},load).subscribe()}
+start();
+</script>
+</body></html>
