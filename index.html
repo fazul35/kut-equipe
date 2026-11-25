@@ -4,8 +4,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#000000">
 <title>Kut · Équipe</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("kut_theme")||"dark"}catch(e){}</script>
 <style>
-:root{--bg:#000;--card:#1a1a1a;--tx:#f5f1ea;--mu:#a8a196;--be:#d8c4a6;--bt:#1a1510;--ln:#2c2a27;--ur:#ff6b5b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+:root{--bg:#000;--card:#1a1a1a;--tx:#f5f1ea;--mu:#a8a196;--be:#d8c4a6;--bt:#1a1510;--ln:#2c2a27;--ur:#ff6b5b;--in:#0d0d0d;--sh:#121110;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+:root[data-theme="light"]{--bg:#fff;--card:#f4f1eb;--tx:#1d1a16;--mu:#6d655a;--be:#c9b08a;--bt:#1a1510;--ln:#e0d8ca;--ur:#c0392b;--in:#fff;--sh:#fff;color-scheme:light}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg)}
 body{color:var(--tx);font:17px/1.4 -apple-system,system-ui,"Segoe UI",sans-serif}
 button{font:inherit;color:var(--tx);cursor:pointer}
@@ -29,13 +31,13 @@ h4{color:var(--mu);font-weight:500;font-size:20px;margin:24px 4px 8px;text-trans
 input[type=checkbox]{width:24px;height:24px;flex:none;accent-color:var(--be)}
 .x{background:none;border:0;color:var(--mu);font-size:18px;padding:4px 8px}
 .sm{padding:9px 14px;border:1px solid var(--ln);border-radius:14px;background:var(--card);font-size:15px}
-input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);border-radius:14px;background:#0d0d0d;color:var(--tx);font:inherit}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);border-radius:14px;background:var(--in);color:var(--tx);font:inherit}
 .btn{padding:14px;border:0;border-radius:16px;background:var(--be);color:var(--bt);font-weight:700;font-size:17px}
-.bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;align-items:center;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,#000 40%);z-index:5}
+.bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;align-items:center;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--bg) 40%);z-index:5}
 .bar input{flex:1;height:54px;border-radius:30px;padding:0 22px;background:var(--card)}
 .pl{width:58px;height:58px;border-radius:50%;border:0;background:var(--be);color:var(--bt);font-size:24px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;z-index:9}.sheet.on{display:flex}
-.sh{background:#121110;border-radius:26px 26px 0 0;width:100%;max-width:640px;margin:0 auto;padding:16px 16px calc(22px + env(safe-area-inset-bottom,0px));max-height:92vh;overflow:auto}
+.sh{background:var(--sh);border-radius:26px 26px 0 0;width:100%;max-width:640px;margin:0 auto;padding:16px 16px calc(22px + env(safe-area-inset-bottom,0px));max-height:92vh;overflow:auto}
 .tabs{display:flex;gap:6px;margin-bottom:14px}.tabs button{flex:1;padding:11px 4px;border:1px solid var(--ln);border-radius:14px;background:var(--card);font-size:15px}
 .tabs button.on{background:var(--be);color:var(--bt);border-color:var(--be)}
 .sh form{display:none;flex-direction:column;gap:10px}
@@ -47,7 +49,7 @@ input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--ln);bo
 .cm{display:flex;margin:6px 0}.cm.me{justify-content:flex-end}
 .bub{max-width:84%;background:var(--card);border-radius:18px;padding:10px 14px;overflow-wrap:anywhere}
 .cm.me .bub{background:var(--be);color:var(--bt)}.cm.me .mu{color:#5b4f3e}.cm .x{font-size:14px;padding:6px 0 0;display:block}.cm.me .x{color:#5b4f3e}
-.cbar{position:fixed;left:0;right:0;bottom:0;display:none;gap:10px;align-items:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:#000;z-index:5}
+.cbar{position:fixed;left:0;right:0;bottom:0;display:none;gap:10px;align-items:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--bg);z-index:5}
 .cbar input{flex:1;height:50px;border-radius:26px;padding:0 20px;background:var(--card)}
 body.inchat .bar{display:none}body.inchat .cbar{display:flex}
 #chat{padding-bottom:110px}
@@ -82,7 +84,6 @@ body.inchat .bar{display:none}body.inchat .cbar{display:flex}
       <button data-go="msgs">📌 Messages <em id="c1"></em></button>
       <button data-go="tasks">✅ Tâches <em id="c2"></em></button>
       <button data-go="plan">📅 Mon planning <em id="c3"></em></button>
-      <button data-go="docs">📁 Documents <em id="c4"></em></button>
     </nav>
     <h4>Résumé du jour</h4>
     <div id="sum" class="card sum"></div>
@@ -92,14 +93,9 @@ body.inchat .bar{display:none}body.inchat .cbar{display:flex}
   <div id="res"></div>
 </section>
 
-<section id="docs" class="scr">
-  <div class="top"><button class="rb" data-go="home">‹</button><b>Documents</b><span style="width:48px"></span></div>
-  <label class="btn lbl">📎 Ajouter un fichier<input type="file" id="fi" hidden></label>
-  <div id="dl"></div>
-</section>
-
 <section id="chat" class="scr">
-  <div class="top"><button class="rb" data-go="home">‹</button><b>Chat d’équipe</b><span style="width:48px"></span></div>
+  <div class="top"><button class="rb" data-go="home">‹</button><b>Chat d’équipe</b><button class="rb" id="cdoc">📁</button></div>
+  <div id="cdl" class="card" style="display:none"></div>
   <div id="cl"></div>
 </section>
 
@@ -126,9 +122,9 @@ body.inchat .bar{display:none}body.inchat .cbar{display:flex}
   <button class="pl" id="plus">✏️</button>
 </div>
 
-<form class="cbar" id="cf"><button type="button" class="rb" id="cmic">🎤</button><input id="ci" placeholder="Écris un message…" autocomplete="off"><button class="pl" style="width:50px;height:50px;font-size:20px">➤</button></form>
+<form class="cbar" id="cf"><button type="button" class="rb" id="cmic">🎤</button><label class="rb" style="display:grid;place-items:center;cursor:pointer">📎<input type="file" id="fi" hidden></label><input id="ci" placeholder="Écris un message…" autocomplete="off"><button class="pl" style="width:50px;height:50px;font-size:20px">➤</button></form>
 
-<div id="pop" class="pop"><button id="nm">✏️ Changer mon prénom</button><button id="out">↩︎ Se déconnecter</button></div>
+<div id="pop" class="pop"><button id="th"></button><button id="nm">✏️ Changer mon prénom</button><button id="out">↩︎ Se déconnecter</button></div>
 
 <div id="sheet" class="sheet"><div class="sh">
   <div class="tabs"><button data-f="fm">💬 Message</button><button data-f="ft">✅ Tâche</button><button data-f="fp">📅 Note perso</button></div>
@@ -159,17 +155,21 @@ body.inchat .bar{display:none}body.inchat .cbar{display:flex}
 const sb=supabase.createClient("https://zbicdedhtfgiixvkdyem.supabase.co","sb_publishable_jQCMg-MK1fNZTYuieZzK8g_1-HBMAAk");
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-let me,names={},ids=[],msgs=[],tasks=[],mine=[],docs=[],q="";
+let me,names={},ids=[],msgs=[],tasks=[],mine=[],q="";
 const nm=id=>names[id]||"Quelqu’un";
 const fd=d=>d?new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}):"Sans date";
 const ft=s=>new Date(s).toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
 const bn=t=>{const b=$("#bn");b.textContent=t;b.style.display="block";setTimeout(()=>b.style.display="none",5000)};
+const getTheme=()=>{try{return localStorage.getItem("kut_theme")||"dark"}catch(e){return"dark"}};
+const setTheme=t=>{document.documentElement.dataset.theme=t;try{localStorage.setItem("kut_theme",t)}catch(e){}
+  document.querySelector("meta[name=theme-color]").content=t==="light"?"#ffffff":"#000000";
+  $("#th").textContent=t==="light"?"🌙 Passer en noir et beige":"☀️ Passer en blanc"};
 const toast=t=>{bn(t);try{navigator.vibrate&&navigator.vibrate(150)}catch(e){}};
 const today=()=>new Date().toLocaleDateString("sv-SE");
 const seen=k=>{try{return +localStorage.getItem("kut_"+k)||0}catch(e){return 0}};
 const mark=k=>{try{localStorage.setItem("kut_"+k,Date.now())}catch(e){}};
 const ok=async p=>{const r=await p;if(r.error)bn("Erreur : "+r.error.message);return r};
-const go=id=>{$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));document.body.classList.toggle("inchat",id==="chat");scrollTo(0,id==="chat"?9e5:0);if(id==="chat"||id==="msgs"){mark(id);render()}if(id==="docs")load()};
+const go=id=>{$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));document.body.classList.toggle("inchat",id==="chat");scrollTo(0,id==="chat"?9e5:0);if(id==="chat"||id==="msgs"){mark(id);render()}};
 const openSheet=f=>{$("#sheet").className="sheet on "+f;$$(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.f===f))};
 const closeSheet=()=>$("#sheet").classList.remove("on");
 
@@ -179,6 +179,8 @@ document.addEventListener("click",e=>{
   if(e.target.id==="sheet")closeSheet();
   if(!e.target.closest("#pop,#who,#gear"))$("#pop").style.display="none"});
 $("#who").onclick=$("#gear").onclick=()=>{const p=$("#pop");p.style.display=p.style.display==="block"?"none":"block"};
+$("#th").onclick=()=>{setTheme(getTheme()==="light"?"dark":"light");$("#pop").style.display="none"};
+setTheme(getTheme());
 $("#plus").onclick=()=>openSheet("fm");
 $("#rf").onclick=()=>load();
 
@@ -219,18 +221,7 @@ function render(){
   const nc=chatMsgs.filter(m=>m.author!==me&&new Date(m.created_at)>seen("chat")).length;
   const nmg=msgs.filter(m=>m.author!==me&&new Date(m.created_at)>seen("msgs")).length;
   bd("#c0",nc);bd("#c1",nmg);document.title=(nc+nmg?"("+(nc+nmg)+") ":"")+"Kut · Équipe";
-  $("#c2").textContent=tasks.filter(t=>!t.done).length;$("#c4").textContent=docs.length||"";
-  const dl=$("#dl");dl.replaceChildren();
-  for(const d of docs){const c=E("div","card row"),g=E("div","grow");
-    g.append(E("div","","📄 "+d.name),E("small","mu",nm(d.uploader)+" · "+ft(d.created_at)));
-    g.onclick=async()=>{const w=window.open("","_blank");
-      const r=await sb.storage.from("files").createSignedUrl(d.path,3600);
-      if(r.error){if(w)w.close();bn("Erreur : "+r.error.message);return}
-      if(w)w.location=r.data.signedUrl;else location.href=r.data.signedUrl};
-    c.append(g);
-    if(d.uploader===me){const x=E("button","x","✕");x.onclick=async()=>{if(confirm("Supprimer ce document ?")){await ok(sb.from("documents").delete().eq("id",d.id));load()}};c.append(x)}
-    dl.append(c)}
-  if(!docs.length)dl.append(E("p","mu","Aucun document."));
+  $("#c2").textContent=tasks.filter(t=>!t.done).length;
   $("#recent").replaceChildren(...msgs.slice(0,4).map(msgCard));
   const ml=$("#ml");ml.replaceChildren(...msgs.map(msgCard));if(!msgs.length)ml.append(E("p","mu","Aucun message."));
   const sel=$("#tto"),keep=sel.value;sel.replaceChildren();
@@ -263,7 +254,12 @@ $("#fi").onchange=async e=>{const f=e.target.files[0];if(!f)return;
   const path="docs/"+me+"/"+Date.now()+"-"+f.name.replace(/[^A-Za-z0-9._-]/g,"_");
   const u=await sb.storage.from("files").upload(path,f,{contentType:f.type||"application/octet-stream"});
   if(u.error){bn("Erreur d’envoi : "+u.error.message);return}
-  await ok(sb.from("documents").insert({name:f.name,path}));e.target.value="";load()};
+  const r=await ok(sb.from("chat").insert({doc_name:f.name,doc_path:path}));e.target.value="";if(!r.error)loadChat()};
+function openDoc(path){const w=window.open("","_blank");
+  sb.storage.from("files").createSignedUrl(path,3600).then(r=>{
+    if(r.error){if(w)w.close();bn("Erreur : "+r.error.message);return}
+    if(w)w.location=r.data.signedUrl;else location.href=r.data.signedUrl})}
+$("#cdoc").onclick=()=>{const p=$("#cdl");p.style.display=p.style.display==="none"?"block":"none"};
 let chatMsgs=[];
 function renderChat(){const c=$("#cl");c.replaceChildren();
   if(!chatMsgs.length)c.append(E("p","mu","Aucun message. Lance la discussion !"));
@@ -271,18 +267,25 @@ function renderChat(){const c=$("#cl");c.replaceChildren();
     if(m.author!==me)b.append(E("small","mu",nm(m.author)));
     if(m.body)b.append(E("div","",m.body));
     if(m.audio_path)b.append(audioBtn(m.audio_path));
+    if(m.doc_path){const bt=E("button","sm","📄 "+m.doc_name);bt.onclick=()=>openDoc(m.doc_path);b.append(bt)}
     b.append(E("small","mu",ft(m.created_at)));
     if(m.author===me){const x=E("button","x","🗑️ Supprimer");
       x.onclick=async()=>{if(confirm("Supprimer ce message du chat ?")){await ok(sb.from("chat").delete().eq("id",m.id));loadChat()}};
       b.append(x)}
     w.append(b);c.append(w)}
+  const dd=chatMsgs.filter(m=>m.doc_path),pn=$("#cdl");
+  pn.replaceChildren(E("b","","📁 Documents partagés ("+dd.length+")"));
+  dd.slice().reverse().forEach(m=>{const r=E("div","row");r.style.marginTop="8px";
+    const bt=E("button","sm grow","📄 "+m.doc_name);bt.onclick=()=>openDoc(m.doc_path);
+    r.append(bt,E("small","mu",nm(m.author)));pn.append(r)});
+  if(!dd.length)pn.append(E("p","mu","Aucun document pour l’instant."));
   if($("#chat").classList.contains("on")){mark("chat");scrollTo(0,9e5)}}
 async function loadChat(){
   const r=await sb.from("chat").select("*").order("created_at",{ascending:false}).limit(100);
   const old=chatMsgs.length?chatMsgs[chatMsgs.length-1].created_at:null;
   chatMsgs=(r.data||[]).reverse();
   const nw=chatMsgs.filter(m=>old&&m.created_at>old&&m.author!==me);
-  if(nw.length&&!$("#chat").classList.contains("on")){const m=nw[nw.length-1];toast("💬 "+nm(m.author)+" : "+(m.body||"🎤 vocal"))}
+  if(nw.length&&!$("#chat").classList.contains("on")){const m=nw[nw.length-1];toast("💬 "+nm(m.author)+" : "+(m.body||(m.doc_path?"📎 "+m.doc_name:"🎤 vocal")))}
   renderChat();render()}
 $("#cf").onsubmit=async e=>{e.preventDefault();const t=$("#ci").value.trim();if(!t)return;
   $("#ci").value="";await ok(sb.from("chat").insert({body:t}));loadChat()};
@@ -304,14 +307,13 @@ $("#cmic").onclick=async()=>{
 
 async function load(){
   const lastM=msgs[0]?msgs[0].created_at:null;
-  const [p,m,t,pl,d]=await Promise.all([
+  const [p,m,t,pl]=await Promise.all([
     sb.from("profiles").select("id,name"),
     sb.from("messages").select("*").order("created_at",{ascending:false}).limit(50),
     sb.from("tasks").select("*").order("created_at",{ascending:false}),
-    sb.from("plan").select("*"),
-    sb.from("documents").select("*").order("created_at",{ascending:false})]);
+    sb.from("plan").select("*")]);
   ids=(p.data||[]).map(x=>x.id);names={};(p.data||[]).forEach(x=>names[x.id]=x.name);
-  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];docs=d.data||[];
+  msgs=m.data||[];tasks=t.data||[];mine=pl.data||[];
   const nw=msgs.filter(x=>lastM&&x.created_at>lastM&&x.author!==me);
   if(nw.length)toast((nw[0].urgent?"🚨 Urgent : ":"📌 ")+nm(nw[0].author)+" : "+nw[0].title);
   render();renderChat()}
@@ -364,8 +366,7 @@ async function start(){
   await load();await loadChat();
   sb.channel("kut").on("postgres_changes",{event:"*",schema:"public",table:"messages"},load)
     .on("postgres_changes",{event:"*",schema:"public",table:"tasks"},load)
-    .on("postgres_changes",{event:"*",schema:"public",table:"chat"},loadChat)
-    .on("postgres_changes",{event:"*",schema:"public",table:"documents"},load).subscribe()}
+    .on("postgres_changes",{event:"*",schema:"public",table:"chat"},loadChat).subscribe()}
 start();
 </script>
 </body></html>
